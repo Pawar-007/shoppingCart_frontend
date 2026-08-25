@@ -3,9 +3,8 @@ import { ShoppingCart } from "lucide-react";
 import { formatCurrency } from "@/utils/formatters";
 
 export default function ProductCard({ product, onAddToCart, addingToCart }) {
-  const image = product.images?.[0] || product.imageUrl || product.image;
+  const image = product.images?.[0] || product.imageUrl[0] || product.image;
   const outOfStock = (product.stockQuantity ?? 1) <= 0;
-
   return (
     <div className="card overflow-hidden group flex flex-col h-full">
       <Link to={`/products/${product.productId}`} className="block relative aspect-square bg-bg overflow-hidden">
@@ -27,9 +26,9 @@ export default function ProductCard({ product, onAddToCart, addingToCart }) {
       </Link>
 
       <div className="p-3.5 flex flex-col flex-1">
-        {product.brand?.name && (
+        {product.brand?.brandName && (
           <span className="text-[11px] uppercase tracking-wide text-ink-faint mb-0.5">
-            {product.brand.name}
+            {product.brand.brandName}
           </span>
         )}
         <Link to={`/products/${product.productId}`} className="text-sm font-medium text-ink line-clamp-2 mb-1.5 hover:text-primary">

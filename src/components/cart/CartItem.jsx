@@ -5,9 +5,8 @@ import { formatCurrency } from "@/utils/formatters";
 
 export default function CartItem({ item, selected, onToggleSelect, onQuantityChange, onRemove, updating }) {
   const product = item.product || item;
-  const image = product.images?.[0] || product.imageUrl || product.image;
+  const image = product.images?.[0] || product.imageUrls[0] || product.image;
   const lineTotal = (product.price || 0) * item.quantity;
-  console.log("item ",image);
   return (
     <div className="flex items-start gap-3 sm:gap-4 py-4 border-b border-border last:border-b-0">
       <input

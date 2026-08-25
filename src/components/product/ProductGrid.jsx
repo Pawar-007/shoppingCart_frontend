@@ -5,6 +5,7 @@ import ErrorState from "@/components/common/ErrorState";
 import { PackageSearch } from "lucide-react";
 
 export default function ProductGrid({ products, loading, error, onRetry, onAddToCart, emptyMessage }) {
+
   if (loading) return <ProductGridSkeleton />;
   if (error) return <ErrorState message={error} onRetry={onRetry} />;
   if (!products || products.length === 0) {

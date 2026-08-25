@@ -30,7 +30,6 @@ export default function ProductDetails() {
     setError(null);
     try {
       const data = await productApi.getOne(productId);
-      console.log("data",data);
       setProduct(data);
       setQuantity(1);
       setActiveImage(0);

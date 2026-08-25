@@ -42,7 +42,6 @@ export default function ProductListing() {
       setAllProducts(productData || []);
       setCategories(categoryData || []);
       setBrands(brandData || []);
-      console.log(productData);
     } catch (err) {
       setError(err.friendlyMessage);
     } finally {
