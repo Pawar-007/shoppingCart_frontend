@@ -21,7 +21,7 @@ export default function CategoryFilter({ categories, selectedId, onSelect }) {
                 : "text-ink-soft hover:bg-bg"
             }`}
           >
-            {c.name}
+            {c.categoryName}
           </button>
         ))}
       </div>

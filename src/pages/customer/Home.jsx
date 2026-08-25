@@ -27,6 +27,7 @@ export default function Home() {
       const [productData, categoryData] = await Promise.all([productApi.list(), categoryApi.list()]);
       setProducts((productData || []).slice(0, 8));
       setCategories((categoryData || []).slice(0, 6));
+      console.log("item ",categoryData);
     } catch (err) {
       setError(err.friendlyMessage);
     } finally {
@@ -36,6 +37,7 @@ export default function Home() {
 
   useEffect(() => {
     load();
+    
   }, []);
 
   async function handleAddToCart(product) {
@@ -122,7 +124,7 @@ export default function Home() {
                 to={`/categories/${c.categoryId ?? c.id}`}
                 className="card card-pad text-center hover:border-primary transition-colors"
               >
-                <span className="text-sm font-medium text-ink">{c.name}</span>
+                <span className="text-sm font-medium text-ink">{c.categoryName}</span>
               </Link>
             ))}
           </div>

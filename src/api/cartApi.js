@@ -15,6 +15,13 @@ const cartApi = {
   remove: (productId) => axiosClient.delete(ENDPOINTS.cart.remove(productId)).then((r) => r.data),
 
   clear: () => axiosClient.delete(ENDPOINTS.cart.clear).then((r) => r.data),
+
+  updateQuantity: (productId, quantity) =>
+    axiosClient
+      .put(ENDPOINTS.cart.update(productId), null, { params: { quantity } })
+      .then((r) => r.data),
+
+
 };
 
 export default cartApi;

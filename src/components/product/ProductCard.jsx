@@ -5,7 +5,6 @@ import { formatCurrency } from "@/utils/formatters";
 export default function ProductCard({ product, onAddToCart, addingToCart }) {
   const image = product.images?.[0] || product.imageUrl || product.image;
   const outOfStock = (product.stockQuantity ?? 1) <= 0;
-  console.log("image ",product);
 
   return (
     <div className="card overflow-hidden group flex flex-col h-full">

@@ -20,20 +20,27 @@ export default function Cart() {
   const toast = useToast();
   const navigate = useNavigate();
 
-  async function load() {
-    setLoading(true);
-    setError(null);
-    try {
-      const data = await cartApi.get();
-      const list = data?.items || data || [];
-      setItems(list);
-      setSelectedIds(new Set(list.map((it) => it.cartItemId ?? it.id ?? it.product?.productId)));
-    } catch (err) {
-      setError(err.friendlyMessage);
-    } finally {
-      setLoading(false);
-    }
+async function load(silent = false) {
+  if (!silent) setLoading(true);
+  setError(null);
+  try {
+    const data = await cartApi.get();
+    console.log(data);
+    const list = data?.items || data || [];
+    setItems(list);
+    setSelectedIds((prev) => {
+      const keys = list.map((it) => it.cartItemId ?? it.id ?? it.product?.productId);
+      // silent refresh: purani selection preserve karo (jo abhi bhi list me hai)
+      if (silent) return new Set([...prev].filter((k) => keys.includes(k)));
+      return new Set(keys);
+    });
+  } catch (err) {
+    if (!silent) setError(err.friendlyMessage);
+    else toast.error(err.friendlyMessage);
+  } finally {
+    if (!silent) setLoading(false);
   }
+}
 
   useEffect(() => {
     load();
@@ -53,20 +60,16 @@ export default function Cart() {
     });
   }
 
-   async function handleQuantityChange(item, quantity) { 
+  async function handleQuantityChange(item, quantity) { 
     const key = itemKey(item); 
- 
+    console.log(item, quantity);
     setUpdatingId(key); 
  
     try { 
         const productId = item.product?.productId ?? item.productId; 
-        console.log("productid  ",productId);
         let res=await cartApi.updateQuantity(productId, quantity); 
-        console.log("resp ",res);
-        let loadResp=await load(); 
-        console.log("loadResp ",loadResp);
+        await load(true); 
         let refResp=await refreshCartBadge(); 
-        console.log("refResp ",refResp);
  
     } catch (err) { 
         toast.error(err.friendlyMessage); 
@@ -95,7 +98,7 @@ export default function Cart() {
     try {
       const productId = item.product?.productId ?? item.productId;
       await cartApi.remove(productId);
-      await load();
+      await load(true); 
       await refreshCartBadge();
       toast.success("Removed from cart");
     } catch (err) {

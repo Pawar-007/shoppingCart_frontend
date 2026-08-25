@@ -44,8 +44,7 @@ export const ENDPOINTS = {
     add: "/api/cart/add",
     remove: (productId) => `/api/cart/remove/${productId}`,
     clear: "/api/cart/clear",
-    updateQuantity: (productId, quantity) =>
-    `/api/cart/update/${productId}?quantity=${quantity}`,
+    update: (productId) => `/api/cart/update/${productId}`,
 
   },
   // NOT CONFIRMED IN BACKEND SPEC: the AddressController's exact routes
