@@ -9,6 +9,7 @@ import { useAuth } from "@/context/AuthContext";
 import { useCart } from "@/context/CartContext";
 import { useToast } from "@/context/ToastContext";
 import { useNavigate } from "react-router-dom";
+import HeroCarousel from "../../components/layout/HeroCarousel";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
@@ -27,7 +28,7 @@ export default function Home() {
       const [productData, categoryData] = await Promise.all([productApi.list(), categoryApi.list()]);
       setProducts((productData || []).slice(0, 8));
       setCategories((categoryData || []).slice(0, 6));
-      console.log("item ",categoryData);
+
     } catch (err) {
       setError(err.friendlyMessage);
     } finally {
@@ -80,18 +81,8 @@ export default function Home() {
             </div>
           </div>
           <div className="hidden lg:block">
-            <div className="aspect-[4/3] rounded-xl bg-primary-light border border-border overflow-hidden flex items-center justify-center">
-              {products[0]?.images?.[0] || products[0]?.imageUrl ? (
-                <img
-                  src={products[0].images?.[0] || products[0].imageUrl}
-                  alt=""
-                  className="h-full w-full object-cover"
-                />
-              ) : (
-                <span className="text-primary-dark font-display font-semibold text-lg">ShopCart</span>
-              )}
-            </div>
-          </div>
+            <HeroCarousel images={products.slice(0, 6).map((p) => p.images?.[0] || p.imageUrl).filter(Boolean)} />
+         </div>
         </div>
       </section>
 
