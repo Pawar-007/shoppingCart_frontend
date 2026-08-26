@@ -26,6 +26,7 @@ export default function OrderDetails() {
     setError(null);
     try {
       const data = await orderApi.getOne(orderId);
+      console.log("data ",data);
       setOrder(data);
     } catch (err) {
       setError(err.friendlyMessage);
