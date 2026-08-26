@@ -45,6 +45,8 @@ export default function Checkout() {
         : list;
       setCartItems(relevant);
       setAddresses(addressData || []);
+
+      console.log("cartDate",cartItems);
       const def = (addressData || []).find((a) => a.isDefault);
       setSelectedAddressId(def?.addressId ?? def?.id ?? addressData?.[0]?.addressId ?? addressData?.[0]?.id ?? null);
     } catch (err) {
@@ -85,10 +87,12 @@ export default function Checkout() {
     }
     setPlacingOrder(true);
     try {
-      const order = await orderApi.place({
+      let payload={
         addressId: selectedAddressId,
         selectedCartItemIds: cartItems.map(itemKey),
-      });
+      };
+      console.log("payload",payload);
+      const order = await orderApi.place(payload);
       await refreshCartBadge();
       toast.success("Order placed successfully");
       navigate(`/order-confirmation/${order.orderId ?? order.id}`);
@@ -151,12 +155,12 @@ export default function Checkout() {
                 return (
                   <div key={itemKey(item)} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
                     <div className="h-14 w-14 rounded bg-bg overflow-hidden shrink-0">
-                      {product.images?.[0] || product.imageUrl ? (
-                        <img src={product.images?.[0] || product.imageUrl} alt="" className="h-full w-full object-cover" />
+                      {product.images?.[0] || product.imageUrls ? (
+                        <img src={product.imageUrls[0]||product.images?.[0]} alt="" className="h-full w-full object-cover" />
                       ) : null}
                     </div>
                     <div className="flex-1 min-w-0">
-                      <p className="text-sm font-medium text-ink line-clamp-1">{product.name}</p>
+                      <p className="text-sm font-medium text-ink line-clamp-1">{product.productName}</p>
                       <p className="text-xs text-ink-soft">Qty {item.quantity}</p>
                     </div>
                     <span className="price text-sm">{formatCurrency((product.price || 0) * item.quantity)}</span>
@@ -186,7 +190,7 @@ export default function Checkout() {
             disabled={placingOrder || cartItems.length === 0}
             className="btn-primary btn-full mt-5"
           >
-            {placingOrder ? "Placing order…" : "4. Place order"}
+            {placingOrder ? "Placing order…" : "Place order"}
           </button>
           <Link to="/cart" className="block text-center text-sm text-ink-soft hover:text-ink mt-3">
             Back to cart

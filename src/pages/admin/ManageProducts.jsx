@@ -23,6 +23,7 @@ export default function ManageProducts() {
     try {
       const data = await productApi.list();
       setProducts(data || []);
+
     } catch (err) {
       setError(err.friendlyMessage);
     } finally {
@@ -75,12 +76,13 @@ export default function ManageProducts() {
             </thead>
             <tbody className="divide-y divide-border">
               {products.map((p) => (
+  
                 <tr key={p.productId}>
                   <td className="px-5 py-3.5">
                     <div className="flex items-center gap-3">
                       <div className="h-10 w-10 rounded bg-bg overflow-hidden shrink-0">
                         {p.images?.[0] || p.imageUrl ? (
-                          <img src={p.images?.[0] || p.imageUrl} alt="" className="h-full w-full object-cover" />
+                          <img src={p.images?.[0] || p.imageUrl[0]} alt="" className="h-full w-full object-cover" />
                         ) : null}
                       </div>
                       <span className="text-ink font-medium line-clamp-1">{p.name}</span>

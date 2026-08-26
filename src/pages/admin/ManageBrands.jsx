@@ -27,6 +27,7 @@ export default function ManageBrands() {
     try {
       const data = await brandApi.list();
       setBrands(data || []);
+      console.log(data)
     } catch (err) {
       setError(err.friendlyMessage);
     } finally {
@@ -113,22 +114,50 @@ export default function ManageBrands() {
       {!loading && !error && brands.length > 0 && (
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-3">
           {brands.map((b) => (
-            <div key={b.brandId ?? b.id} className="card card-pad flex items-center justify-between">
-              <span className="text-sm font-medium text-ink">{b.brandName}</span>
-          
-              <div className="flex items-center gap-1">
-                <button onClick={() => openEdit(b)} className="btn-ghost btn-sm !px-2">
-                  <Pencil size={14} />
-                </button>
-                <button
-                  onClick={() => setDeleteTarget(b)}
-                  className="btn-ghost btn-sm !px-2 !text-danger hover:!bg-danger-light"
-                >
-                  <Trash2 size={14} />
-                </button>
-              </div>
-            </div>
-          ))}
+  <div
+    key={b.brandId ?? b.id}
+    className="card card-pad flex items-center justify-between"
+  >
+    <div className="flex items-center gap-3">
+      {/* Brand Logo */}
+      <div className="h-10 w-10 rounded-lg border border-border bg-white flex items-center justify-center overflow-hidden">
+        {b.logoUrl ? (
+          <img
+            src={b.logoUrl}
+            alt={b.brandName}
+            className="h-full w-full object-contain p-1.5"
+          />
+        ) : (
+          <span className="text-xs text-ink-faint">
+            {b.brandName?.charAt(0)}
+          </span>
+        )}
+      </div>
+
+      {/* Brand Name */}
+      <span className="text-sm font-medium text-ink">
+        {b.brandName}
+      </span>
+    </div>
+
+    {/* Actions */}
+    <div className="flex items-center gap-1">
+      <button
+        onClick={() => openEdit(b)}
+        className="btn-ghost btn-sm !px-2"
+      >
+        <Pencil size={14} />
+      </button>
+
+      <button
+        onClick={() => setDeleteTarget(b)}
+        className="btn-ghost btn-sm !px-2 !text-danger hover:!bg-danger-light"
+      >
+        <Trash2 size={14} />
+      </button>
+    </div>
+  </div>
+))}
         </div>
       )}
 

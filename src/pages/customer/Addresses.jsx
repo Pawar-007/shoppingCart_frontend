@@ -47,23 +47,43 @@ export default function Addresses() {
     setFormOpen(true);
   }
 
-  async function handleSubmit(values) {
-    setSaving(true);
-    try {
-      if (editingAddress) {
-        await addressApi.update(editingAddress.addressId ?? editingAddress.id, values);
-        toast.success("Address updated");
-      } else {
-        await addressApi.create(values);
-        toast.success("Address added");
+    async function handleSubmit(values) {
+      setSaving(true);
+
+      try {
+        // const addressData = {
+        //   fullName: values.fullName,
+        //   phone: values.phone,
+        //   addressLine1: values.line1,
+        //   addressLine2: values.line2,
+        //   city: values.city,
+        //   state: values.state,
+        //   country: values.country,
+        //   pincode: values.postalCode,
+
+        //   // backend ke required fields
+        //   addressType: "HOME",
+        //   isDefault: false,
+        // };
+
+        if (editingAddress) {
+          await addressApi.update(
+            editingAddress.addressId ?? editingAddress.id,
+            values
+          );
+          toast.success("Address updated");
+        } else {
+          await addressApi.create(values);
+          toast.success("Address added");
+        }
+
+        setFormOpen(false);
+        await load();
+      } catch (err) {
+        toast.error(err.friendlyMessage);
+      } finally {
+        setSaving(false);
       }
-      setFormOpen(false);
-      await load();
-    } catch (err) {
-      toast.error(err.friendlyMessage);
-    } finally {
-      setSaving(false);
-    }
   }
 
   async function handleDelete() {
