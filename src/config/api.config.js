@@ -66,5 +66,12 @@ export const ENDPOINTS = {
     getOne: (id) => `/orders/${id}`,
     cancel: (id) => `/orders/${id}/cancel`,
   },
-
+  admin: {
+    users: "/admin/users",
+    orders: "/admin/orders",
+    updateOrderStatus: (orderId) => `/admin/status/${orderId}`,
+    totalUsers: "/admin/total-users",
+    totalOrders: "/admin/total-orders",
+    totalProducts: "/admin/total-products",
+  },
 };
