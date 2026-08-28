@@ -1,6 +1,6 @@
 const STATUS_STYLES = {
   PENDING: "bg-warning-light text-warning",
-  PROCESSING: "bg-info-light text-info",
+  OUT_FOR_DELIVERY: "bg-info-light text-info",
   SHIPPED: "bg-primary-light text-primary-dark",
   DELIVERED: "bg-primary text-white",
   CANCELLED: "bg-danger-light text-danger",

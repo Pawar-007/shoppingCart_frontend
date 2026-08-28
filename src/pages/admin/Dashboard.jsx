@@ -52,9 +52,16 @@ export default function Dashboard() {
 
   return (
     <div>
-      <div className="shelf-heading">
-        <h2>Dashboard</h2>
-      </div>
+      <div className="shelf-heading flex items-center justify-between">
+          <h2>Dashboard</h2>
+
+          <Link
+            to="/"
+            className="btn-secondary btn-sm"
+          >
+            Back to Home
+          </Link>
+        </div>
 
       <div className="grid sm:grid-cols-3 gap-4 mb-8">
         {cards.map(({ label, value, icon: Icon, to }) => (

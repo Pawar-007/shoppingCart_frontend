@@ -26,7 +26,6 @@ export default function OrderDetails() {
     setError(null);
     try {
       const data = await orderApi.getOne(orderId);
-      console.log("data ",data);
       setOrder(data);
     } catch (err) {
       setError(err.friendlyMessage);
@@ -63,55 +62,62 @@ export default function OrderDetails() {
   const canCancel = CANCELLABLE_STATUSES.includes(order.status);
 
   return (
-    <div className="shell py-8 max-w-3xl">
-      <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-ink mb-6">
-        <ChevronLeft size={15} /> Back
-      </button>
+        <div className="shell py-8 max-w-3xl">
+          <button onClick={() => navigate(-1)} className="inline-flex items-center gap-1 text-sm text-ink-soft hover:text-ink mb-6">
+            <ChevronLeft size={15} /> Back
+          </button>
 
-      <div className="flex items-center justify-between flex-wrap gap-2 mb-6">
-        <h1 className="font-display font-bold text-xl">Order #{order.orderId}</h1>
-        <OrderStatusBadge status={order.status} />
-      </div>
-
-      <div className="grid sm:grid-cols-2 gap-4 mb-6">
-        <div className="card card-pad">
-          <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft mb-2">Order info</h3>
-          <p className="text-sm text-ink-soft">Date: <span className="text-ink">{formatDate(order.orderDate || order.createdAt)}</span></p>
-          <p className="text-sm text-ink-soft mt-1">
-            Total: <span className="price text-ink">{formatCurrency(order.totalAmount ?? order.total)}</span>
-          </p>
-        </div>
-        {address && (
-          <div className="card card-pad">
-            <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft mb-2">Delivery address</h3>
-            <p className="text-sm text-ink-soft leading-relaxed">
-              {address.fullName || address.name}<br />
-              {address.line1 || address.addressLine1}
-              {address.line2 || address.addressLine2 ? `, ${address.line2 || address.addressLine2}` : ""}<br />
-              {address.city}, {address.state} {address.postalCode || address.zipCode}
-            </p>
+          <div className="flex items-center justify-between flex-wrap gap-2 mb-6">
+            <h1 className="font-display font-bold text-xl">Order #{order.orderId}</h1>
+            <OrderStatusBadge status={order.status} />
           </div>
-        )}
-      </div>
 
-      <div className="card card-pad">
-        <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft mb-3">Items</h3>
-        <div className="divide-y divide-border">
-          {items.map((item, i) => {
-            const product = item.product || item;
-            return (
-              <div key={product.productId ?? i} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
-                <div className="h-14 w-14 rounded bg-bg overflow-hidden shrink-0">
-                  {product.images?.[0] || product.imageUrl ? (
-                    <img src={product.images?.[0] || product.imageUrl} alt="" className="h-full w-full object-cover" />
-                  ) : null}
-                </div>
-                <div className="flex-1 min-w-0">
-                  <p className="text-sm font-medium text-ink line-clamp-1">{product.name}</p>
-                  <p className="text-xs text-ink-soft">Qty {item.quantity} · {formatCurrency(product.price)} each</p>
-                </div>
-                <span className="price text-sm">{formatCurrency((product.price || 0) * item.quantity)}</span>
+          <div className="grid sm:grid-cols-2 gap-4 mb-6">
+            <div className="card card-pad">
+              <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft mb-2">Order info</h3>
+              <p className="text-sm text-ink-soft">Date: <span className="text-ink">{formatDate(order.orderDate || order.createdAt)}</span></p>
+              <p className="text-sm text-ink-soft mt-1">
+                Total: <span className="price text-ink">{formatCurrency(order.totalAmount ?? order.total)}</span>
+              </p>
+            </div>
+            {address && (
+              <div className="card card-pad">
+                <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft mb-2">Delivery address</h3>
+                <p className="text-sm text-ink-soft leading-relaxed">
+                  {address.fullName || address.name}<br />
+                  {address.line1 || address.addressLine1}
+                  {address.line2 || address.addressLine2 ? `, ${address.line2 || address.addressLine2}` : ""}<br />
+                  {address.city}, {address.state} {address.postalCode || address.zipCode}
+                </p>
               </div>
+            )}
+          </div>
+
+          <div className="card card-pad">
+            <h3 className="text-xs font-semibold uppercase tracking-wide text-ink-soft mb-3">Items</h3>
+            <div className="divide-y divide-border">
+              {items.map((item, i) => {
+                const product = item.product || item;
+                return (
+                  <div key={product.productId ?? i} className="flex items-center gap-3 py-3 first:pt-0 last:pb-0">
+              <div className="h-14 w-14 rounded bg-bg overflow-hidden shrink-0">
+                {product.imageUrl?.[0] || product.imageUrl ? (
+                  <img
+                    src={Array.isArray(product.imageUrl) ? product.imageUrl[0].imageUrl : product.imageUrl}
+                    alt=""
+                    className="h-full w-full object-cover"
+                  />
+                ) : null}
+              </div>
+              <div className="flex-1 min-w-0">
+                <p className="text-sm font-medium text-ink line-clamp-1">{product.productName}</p>
+                {product.description && (
+                  <p className="text-xs text-ink-soft line-clamp-2 mt-0.5">{product.description}</p>
+                )}
+                <p className="text-xs text-ink-soft mt-0.5">Qty {item.quantity} · {formatCurrency(product.price)} each</p>
+              </div>
+              <span className="price text-sm">{formatCurrency((product.price || 0) * item.quantity)}</span>
+            </div>
             );
           })}
         </div>

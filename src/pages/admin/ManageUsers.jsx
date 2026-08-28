@@ -15,6 +15,7 @@ export default function ManageUsers() {
     setError(null);
     try {
       const data = await adminApi.getUsers();
+      console.log("data",data);
       setUsers(data || []);
     } catch (err) {
       setError(err.friendlyMessage);

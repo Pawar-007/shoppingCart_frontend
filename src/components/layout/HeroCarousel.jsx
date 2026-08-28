@@ -9,7 +9,6 @@ const DEMO_SLIDES = [
   "https://images.unsplash.com/photo-1523275335684-37898b6baf30",
   "https://images.unsplash.com/photo-1496181133206-80ce9b88a853"
 ];
-console.log("demo slides",DEMO_SLIDES)
 export default function HeroCarousel({ images = [], intervalMs = 4000 }) {
   const [index, setIndex] = useState(0);
 

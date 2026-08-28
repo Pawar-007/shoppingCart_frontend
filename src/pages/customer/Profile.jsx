@@ -161,7 +161,6 @@ export default function Profile() {
 
     try {
       const data = await authApi.getProfile();
-
       setProfile(data);
 
       setForm({

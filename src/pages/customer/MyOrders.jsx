@@ -22,7 +22,6 @@ export default function MyOrders() {
     try {
       const data = await orderApi.list();
       setOrders(data || []);
-      console.log("my orders ",data);
     } catch (err) {
       setError(err.friendlyMessage);
     } finally {
